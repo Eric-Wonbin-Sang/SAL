@@ -1,4 +1,5 @@
 {
   "name": "SAL BETA BOT",
-  "groupme_info_path": "{api_keys_dir}/Groupme Bot SAL BETA credentials.txt"
+  "call_code": "sal",
+  "credentials_json": "{secrets_dir}/dev_credentials.json"
 }

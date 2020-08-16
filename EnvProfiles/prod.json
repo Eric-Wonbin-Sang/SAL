@@ -1,4 +1,5 @@
 {
   "name": "SAL - Stevens Automation Loader",
-  "creds_paths": "{api_keys_dir}/Groupme Bot SAL credentials.txt"
+  "call_code": "sal",
+  "credentials_json": "{secrets_dir}/prod_credentials.json"
 }
