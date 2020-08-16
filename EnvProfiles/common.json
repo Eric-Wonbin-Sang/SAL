@@ -1,0 +1,6 @@
+{
+  "google_sheets_creds": "{api_keys_dir}/Google API - StevensLTBots.json",
+  "groupme_access_token": "{api_keys_dir}/Groupme Access Token.txt",
+  "groupme_character_limit": 450,
+  "groupme_tab": "    "
+}
