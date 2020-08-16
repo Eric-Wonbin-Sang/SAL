@@ -99,11 +99,8 @@ class Bot:
         if output_string != "":
             str_ret_list.append(output_string)
 
-        print("------------ SAL Response ----------")
         for str_ret in str_ret_list:
             for string in [str_ret[0 + i:self.character_limit + i]
                            for i in range(0, len(str_ret), self.character_limit)]:
                 time.sleep(1)
-                print(string)
                 requests.post('https://api.groupme.com/v3/bots/post', params={'bot_id': self.bot_id, 'text': string})
-        print("-----------------------------------")
