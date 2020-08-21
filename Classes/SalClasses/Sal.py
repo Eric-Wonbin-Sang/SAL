@@ -1,6 +1,7 @@
-from lib import GroupMe, Stevens
+from lib import GroupMe, StevensIT
 
-from Classes import EnvProfile, LTSheets, Command
+from Classes.SalClasses import SalCommand
+from Classes import EnvProfile, LTSheets
 
 
 class Sal(GroupMe.Bot):
@@ -9,7 +10,7 @@ class Sal(GroupMe.Bot):
 
         self.env_profile = EnvProfile.EnvProfile(env_key=env_key)
         self.lt_sheets = LTSheets.LTSheets(self.env_profile.common_dict["google_sheets_creds"])
-        # self.stevens = Stevens.Stevens(room_schedule_url=self.env_profile.common_dict["google_sheets_creds"])
+        self.stevens = StevensIT.Stevens(room_schedule_url=self.get_room_schedule_url())
 
         super().__init__(name=self.env_profile.profile_dict["name"],
                          call_code=self.env_profile.profile_dict["call_code"],
@@ -19,15 +20,19 @@ class Sal(GroupMe.Bot):
                          startup_message=self.lt_sheets.help_dict["help"])
 
         self.sal_command_list = [
-            SalCommand(self.lt_sheets, "room", self.room_response, requires_args=True),
-            SalCommand(self.lt_sheets, "prof", None, requires_args=True),
-            SalCommand(self.lt_sheets, "box", None, requires_args=False),
-            SalCommand(self.lt_sheets, "contact", None, requires_args=False),
-            SalCommand(self.lt_sheets, "urls", None, requires_args=False),
-            SalCommand(self.lt_sheets, "work", None, requires_args=True),
-            SalCommand(self.lt_sheets, "lamp", None, requires_args=False),
-            SalCommand(self.lt_sheets, "update", None, requires_args=False)
+            SalCommand.SalCommand(self.lt_sheets, "room", self.room_response, requires_args=True),
+            SalCommand.SalCommand(self.lt_sheets, "prof", None, requires_args=True),
+            SalCommand.SalCommand(self.lt_sheets, "box", None, requires_args=False),
+            SalCommand.SalCommand(self.lt_sheets, "contact", None, requires_args=False),
+            SalCommand.SalCommand(self.lt_sheets, "urls", None, requires_args=False),
+            SalCommand.SalCommand(self.lt_sheets, "work", None, requires_args=True),
+            SalCommand.SalCommand(self.lt_sheets, "lamp", None, requires_args=False),
+            SalCommand.SalCommand(self.lt_sheets, "update", None, requires_args=False)
         ]
+
+    def get_room_schedule_url(self):
+        data_frame = self.lt_sheets.get_lt_sheet("urls").data_frame
+        return data_frame.loc[data_frame["Website"] == "Room Schedule"].iloc[0]["URL"]
 
     def get_sal_command(self, command_name):
         for sal_command in self.sal_command_list:
@@ -58,25 +63,3 @@ class Sal(GroupMe.Bot):
 
     def room_response(self, arg_list):
         return "yes"
-
-
-class SalCommand(Command.Command):
-
-    def __init__(self, lt_sheets, command_name, function, requires_args):
-
-        self.lt_sheets = lt_sheets
-
-        super().__init__(command_name, function, requires_args)
-
-        self.update_function()
-        self.update_help()
-
-    def update_function(self):
-        lt_sheet = self.lt_sheets.get_lt_sheet(self.name)
-        if self.function is None and lt_sheet is not None:
-            self.function = lt_sheet.sheet_to_simple_response
-        print(self.function)
-
-    def update_help(self):
-        if new_help := self.lt_sheets.help_dict.get(self.name):
-            self.help = new_help
