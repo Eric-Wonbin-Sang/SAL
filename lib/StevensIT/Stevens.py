@@ -12,22 +12,22 @@ class Stevens:
         self.name = "Stevens Institute of Technology"
         self.room_schedule_url = room_schedule_url
 
-        self.room_list, self.section_list = self.get_room_list_section_list()
+        self.section_list = self.get_section_list()
         self.course_list = self.get_course_list()
         self.subject_list = self.get_subject_list()
+        self.room_list = self.get_room_list()
 
         self.time_updated = datetime.datetime.today()
 
-        print(self.room_list_to_str())
+        print(self.list_to_str("r"))
 
-    def get_room_list_section_list(self):
+    def get_section_list(self):
         soup = BeautifulSoup(requests.get(self.room_schedule_url).text, 'html.parser')
         main_body = soup.find_all("div", class_="panel-body")[0]
 
         room_name_list = [elem.text for elem in main_body.find_all("b")]
         table_list = main_body.find_all("table")
 
-        room_list = []
         section_list = []
         for r_i, room_name in enumerate(room_name_list):
             temp_section_list = []
@@ -41,9 +41,8 @@ class Stevens:
                     start_time, end_time = [datetime.datetime.strptime(time, "%H%M") for time in times.split("-")]
                     temp_section_list.append(Section.Section(
                         section_name, student_count, professor_name, room_name, day_code, start_time, end_time))
-            room_list.append(Room.Room(room_name, temp_section_list))
             section_list.extend(temp_section_list)
-        return room_list, section_list
+        return section_list
 
     def get_course_list(self):
         group_dict = {}
@@ -61,17 +60,25 @@ class Stevens:
             group_dict[course.subject_code] += [course]
         return [Subject.Subject(subject_code, course_list) for subject_code, course_list in group_dict.items()]
 
-    def room_list_to_str(self):
-        return "\n".join(str(room) for room in self.room_list)
+    def get_room_list(self):
+        group_dict = {}
+        for section in self.section_list:
+            if section.room_name not in group_dict:
+                group_dict[section.room_name] = []
+            group_dict[section.room_name] += [section]
+        return [Room.Room(room_name, section_list) for room_name, section_list in group_dict.items()]
 
-    def section_list_to_str(self):
-        return "\n".join(str(section) for section in self.section_list)
-
-    def course_list_to_str(self):
-        return "\n".join(str(course) for course in self.course_list)
-
-    def subject_list_to_str(self):
-        return "\n".join(str(subject) for subject in self.subject_list)
+    def list_to_str(self, list_key):
+        obj_list = []
+        if list_key == "s":
+            obj_list = self.section_list
+        elif list_key == "c":
+            obj_list = self.course_list
+        elif list_key == "s":
+            obj_list = self.subject_list
+        elif list_key == "r":
+            obj_list = self.room_list
+        return "\n".join(str(obj) for obj in obj_list)
 
 
 if __name__ == '__main__':
