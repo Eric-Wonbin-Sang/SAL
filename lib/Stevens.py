@@ -138,7 +138,7 @@ class Stevens:
 
     def __init__(self, room_schedule_url):
 
-        self.name = "Stevens Institute of Technology"\
+        self.name = "Stevens Institute of Technology"
 
         self.room_schedule_url = room_schedule_url
         self.room_list = self.get_room_list()
