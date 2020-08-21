@@ -1,6 +1,6 @@
 import argparse
 
-from Classes import Sal
+from Classes.SalClasses import Sal
 
 
 def get_args():
