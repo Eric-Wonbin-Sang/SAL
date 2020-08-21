@@ -1,6 +1,23 @@
 
 class Section:
 
+    day_code_dict = {
+        "m": "monday",
+        "t": "tuesday",
+        "w": "wednesday",
+        "r": "thursday",
+        "f": "friday",
+        "s": "saturday",
+        "u": "sunday",
+        "monday": "m",
+        "tuesday": "t",
+        "wednesday": "w",
+        "thursday": "r",
+        "friday": "f",
+        "saturday": "s",
+        "sunday": "u"
+    }
+
     def __init__(self, name, student_count, professor_name, room_name, day_code, start_time, end_time):
 
         self.name = name
