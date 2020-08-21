@@ -29,12 +29,6 @@ class GroupChat:
     def get_newest_valid_message(self):
         return message_list[0] if (message_list := self.get_message_list()) and message_list[0].text != "" else None
 
-    def get_first_valid_message(self):
-        while True:
-            if curr_message := self.get_newest_valid_message():
-                return curr_message
-            time.sleep(self.refresh_rate)
-
 
 class Message:
 
@@ -63,7 +57,7 @@ class Message:
 
 class Bot:
 
-    def __init__(self, name, call_code, bot_id, groupchat_id , groupme_access_token):
+    def __init__(self, name, call_code, bot_id, groupchat_id, groupme_access_token, startup_message):
 
         self.name = name
         self.call_code = call_code
@@ -72,6 +66,8 @@ class Bot:
         self.groupchat_id = groupchat_id
         self.groupme_access_token = groupme_access_token
         self.group = self.get_group()
+
+        self.startup_message = startup_message
 
         self.character_limit = groupme_character_limit
 
@@ -86,7 +82,7 @@ class Bot:
         str_ret_list = []
 
         output_string = ""
-        for i, split_text in enumerate(text.split("\n")):
+        for i, split_text in enumerate(str(text).split("\n")):
             if i != 0:
                 output_string += "\n"
             if len(output_string + split_text) >= self.character_limit:
@@ -99,8 +95,26 @@ class Bot:
         if output_string != "":
             str_ret_list.append(output_string)
 
+        print("----------- BOT Response ----------")
         for str_ret in str_ret_list:
             for string in [str_ret[0 + i:self.character_limit + i]
                            for i in range(0, len(str_ret), self.character_limit)]:
                 time.sleep(1)
+                print(string)
                 requests.post('https://api.groupme.com/v3/bots/post', params={'bot_id': self.bot_id, 'text': string})
+        print("-----------------------------------")
+
+    def watch_messages(self):
+        prev_message = self.group.get_newest_valid_message()
+        self.write_text(self.startup_message)
+        while True:
+            curr_message = self.group.get_newest_valid_message()
+            if curr_message and prev_message and curr_message.created_at != prev_message.created_at:
+                if curr_message.name != self.name:
+                    print(curr_message)
+                self.handle_response(curr_message)
+            prev_message = curr_message
+
+    def handle_response(self, message):
+        if message.name != self.name:
+            self.write_text("Bot heard: {}".format(message.text))
