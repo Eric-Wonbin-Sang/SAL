@@ -1,4 +1,5 @@
-from lib import GroupMe, StevensIT
+from lib import GroupMe
+from lib.StevensIT.Stevens import Stevens
 
 from Classes.SalClasses import SalCommand
 from Classes import EnvProfile, LTSheets
@@ -10,7 +11,7 @@ class Sal(GroupMe.Bot):
 
         self.env_profile = EnvProfile.EnvProfile(env_key=env_key)
         self.lt_sheets = LTSheets.LTSheets(self.env_profile.common_dict["google_sheets_creds"])
-        self.stevens = StevensIT.Stevens(room_schedule_url=self.get_room_schedule_url())
+        self.stevens = Stevens(room_schedule_url=self.get_room_schedule_url())
 
         super().__init__(name=self.env_profile.profile_dict["name"],
                          call_code=self.env_profile.profile_dict["call_code"],
