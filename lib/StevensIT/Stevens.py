@@ -2,7 +2,7 @@ import datetime
 import requests
 from bs4 import BeautifulSoup
 
-from lib.StevensIT import Section, Room, Course, Subject
+from lib.StevensIT import Section, Room, Course, Subject, Professor
 
 
 class Stevens:
@@ -16,10 +16,9 @@ class Stevens:
         self.course_list = self.get_course_list()
         self.subject_list = self.get_subject_list()
         self.room_list = self.get_room_list()
+        self.professor_list = self.get_professor_list()
 
         self.time_updated = datetime.datetime.today()
-
-        print(self.list_to_str("r"))
 
     def get_section_list(self):
         soup = BeautifulSoup(requests.get(self.room_schedule_url).text, 'html.parser')
@@ -68,6 +67,14 @@ class Stevens:
             group_dict[section.room_name] += [section]
         return [Room.Room(room_name, section_list) for room_name, section_list in group_dict.items()]
 
+    def get_professor_list(self):
+        group_dict = {}
+        for section in self.section_list:
+            if section.professor_name not in group_dict:
+                group_dict[section.professor_name] = []
+            group_dict[section.professor_name] += [section]
+        return [Professor.Professor(name, section_list) for name, section_list in group_dict.items()]
+
     def list_to_str(self, list_key):
         obj_list = []
         if list_key == "s":
@@ -78,6 +85,8 @@ class Stevens:
             obj_list = self.subject_list
         elif list_key == "r":
             obj_list = self.room_list
+        elif list_key == "p":
+            obj_list = self.professor_list
         return "\n".join(str(obj) for obj in obj_list)
 
 
