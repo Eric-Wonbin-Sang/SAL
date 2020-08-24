@@ -21,7 +21,7 @@ def parse_json(json_path):
 
 
 def get_pretty_time(some_datetime):
-    some_datetime.strftime("%I:%M%p")
+    return some_datetime.strftime("%I:%M%p")
 
 
 def txt_to_dict(txt_path):
@@ -30,3 +30,7 @@ def txt_to_dict(txt_path):
         key, value = [obj.strip() for obj in line.split(":")]
         ret_dict[key] = value
     return ret_dict
+
+
+def data_frame_to_list_list(data_frame):
+    return [list(x) for x in list(data_frame.values)]
