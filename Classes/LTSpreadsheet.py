@@ -1,9 +1,10 @@
 from lib import Google
 
 from Classes import LTSheet
+from General import ListHelp
 
 
-class LTSheets(Google.SpreadSheet):
+class LTSpreadsheet(Google.Spreadsheet):
 
     def __init__(self, google_sheets_credentials_json):
 
@@ -17,12 +18,7 @@ class LTSheets(Google.SpreadSheet):
     def get_help_dict(self):
 
         def data_list_list_to_str(some_list_list):
-            ret_str = ""
-            for i, some_list in enumerate(some_list_list):
-                if i != 0:
-                    ret_str += "\n"
-                ret_str += "     ".join([data if data is not None else "" for data in some_list])
-            return ret_str.strip()
+            return "\n".join("     ".join(ListHelp.replace_nones(some_list, "")) for some_list in some_list_list)
 
         helps_l_l = self.sheet_to_list_list(self.helps_sheet_title)
         command_index_list = [i for i, data_list in enumerate(helps_l_l) if data_list[0] is not None] + [len(helps_l_l)]
@@ -43,3 +39,8 @@ class LTSheets(Google.SpreadSheet):
             if lt_sheet.title == lt_sheet_title:
                 return lt_sheet
         return None
+
+    def update(self):
+        super().update()
+        self.help_dict = self.get_help_dict()
+        self.lt_sheet_list = self.get_lt_sheet_list()
