@@ -23,3 +23,7 @@ def is_none_list(data_list):
 
 def remove_list_list_none_lists(data_list_list):
     return [data_list for data_list in data_list_list if not is_none_list(data_list)]
+
+
+def replace_nones(data_list, replace_value):
+    return [data if data is not None else replace_value for data in data_list]
