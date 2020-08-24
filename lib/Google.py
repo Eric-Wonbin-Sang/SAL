@@ -2,7 +2,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 
-class SpreadSheet:
+class Spreadsheet:
 
     def __init__(self, doc_name, google_sheets_credentials_json):
 
