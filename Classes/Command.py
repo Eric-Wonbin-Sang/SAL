@@ -1,7 +1,7 @@
 
 class Command:
 
-    def __init__(self, name, function, requires_args, command_help="Help does not exist!"):
+    def __init__(self, name, function, requires_args, command_help):
         self.name = name
         self.function = function
         self.requires_args = requires_args
