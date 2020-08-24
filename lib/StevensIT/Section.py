@@ -1,23 +1,6 @@
 
 class Section:
 
-    day_code_dict = {
-        "m": "monday",
-        "t": "tuesday",
-        "w": "wednesday",
-        "r": "thursday",
-        "f": "friday",
-        "s": "saturday",
-        "u": "sunday",
-        "monday": "m",
-        "tuesday": "t",
-        "wednesday": "w",
-        "thursday": "r",
-        "friday": "f",
-        "saturday": "s",
-        "sunday": "u"
-    }
-
     def __init__(self, name, student_count, professor_name, room_name, day_code, start_time, end_time):
 
         self.name = name
@@ -25,7 +8,7 @@ class Section:
         self.professor_name = professor_name
         self.room_name = room_name
 
-        self.day_code = day_code
+        self.day_code = day_code.lower()
         self.start_time = start_time
         self.end_time = end_time
 
@@ -35,6 +18,7 @@ class Section:
 
         self.subject = None
         self.course = None
+        self.professor = None
 
     def get_codes(self):
         subject_code = (split_data := self.name.split(" "))[0]
