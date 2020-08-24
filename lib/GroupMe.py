@@ -57,7 +57,7 @@ class Message:
 
 class Bot:
 
-    def __init__(self, name, call_code, bot_id, groupchat_id, groupme_access_token, startup_message):
+    def __init__(self, name, call_code, bot_id, groupchat_id, groupme_access_token, startup_message, do_startup_message):
 
         self.name = name
         self.call_code = call_code
@@ -68,6 +68,7 @@ class Bot:
         self.group = self.get_group()
 
         self.startup_message = startup_message
+        self.do_startup_message = do_startup_message
 
         self.character_limit = groupme_character_limit
 
@@ -106,7 +107,9 @@ class Bot:
 
     def watch_messages(self):
         prev_message = self.group.get_newest_valid_message()
-        self.write_text(self.startup_message)
+
+        if self.do_startup_message:
+            self.write_text(self.startup_message)
         while True:
             curr_message = self.group.get_newest_valid_message()
             if curr_message and prev_message and curr_message.created_at != prev_message.created_at:
