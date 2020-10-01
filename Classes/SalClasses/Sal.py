@@ -33,13 +33,15 @@ class Sal(GroupMe.Bot):
         self.stevens = Stevens(room_schedule_url=self.get_room_schedule_url())
         print("done!")
 
-        super().__init__(name=self.env_profile.profile_dict["name"],
-                         call_code=self.env_profile.profile_dict["call_code"],
-                         bot_id=self.env_profile.profile_dict["credentials_json"]["bot_id"],
-                         groupchat_id=self.env_profile.profile_dict["credentials_json"]["groupchat_id"],
-                         groupme_access_token=open(self.env_profile.common_dict["groupme_access_token"]).read(),
-                         startup_message=self.lt_spreadsheet.help_dict["help"],
-                         do_startup_message=do_startup_message)
+        super().__init__(
+            name=self.env_profile.profile_dict["name"],
+            call_code=self.env_profile.profile_dict["call_code"],
+            bot_id=self.env_profile.profile_dict["credentials_json"]["bot_id"],
+            groupchat_id=self.env_profile.profile_dict["credentials_json"]["groupchat_id"],
+            groupme_access_token=open(self.env_profile.common_dict["groupme_access_token"]).read(),
+            startup_message=self.lt_spreadsheet.help_dict["help"],
+            do_startup_message=do_startup_message
+        )
 
         self.sal_command_list = self.get_sal_command_list(
             [
@@ -90,7 +92,7 @@ class Sal(GroupMe.Bot):
         return command_list_list
 
     def handle_response(self, message):
-        if message.name != self.name and self.is_bot_called(message):
+        if message.name != self.name and self.is_bot_called(message) and message is not None:
             command_list_list = self.get_command_list_list(message.text)
             if command_list_list:
                 for (command, *arg_list) in command_list_list:

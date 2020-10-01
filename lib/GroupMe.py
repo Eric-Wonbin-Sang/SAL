@@ -23,8 +23,11 @@ class GroupChat:
                 if overall_response.status_code == 200:
                     return [Message(raw_message) for raw_message in overall_response.json()['response']['messages']]
                 return []
+            except requests.exceptions.ConnectionError:
+                print("requests.exceptions.ConnectionError")
             except Exception as e:
-                print(type(e), e)
+                print("UNKNOWN ERROR WHEN RETRIEVING MESSAGES\n", type(e), e)
+
 
     def get_newest_valid_message(self):
         return message_list[0] if (message_list := self.get_message_list()) and message_list[0].text != "" else None
