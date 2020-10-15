@@ -175,6 +175,6 @@ class Sal(GroupMe.Bot):
         return weather.get_response(city)
 
     def joke_response(self):
-        if random.random() < .69:
+        if random.random() < .5:
             return "Evan Thomas Romeo"
         return pyjokes.get_joke()
