@@ -26,8 +26,7 @@ class GroupChat:
             except requests.exceptions.ConnectionError:
                 print("requests.exceptions.ConnectionError")
             except Exception as e:
-                print("UNKNOWN ERROR WHEN RETRIEVING MESSAGES\n", type(e), e)
-
+                print("UNKNOWN ERROR WHEN RETRIEVING MESSAGES\n{}\n{}".format(type(e), e))
 
     def get_newest_valid_message(self):
         return message_list[0] if (message_list := self.get_message_list()) and message_list[0].text != "" else None
