@@ -6,7 +6,7 @@ from Classes.SalClasses import Sal
 def get_args():
     parser = argparse.ArgumentParser(description='This is the Stevens Automation Loader.')
     parser.add_argument('--env_key', type=str, default="dev", help='an integer for the accumulator')
-    parser.add_argument('--do_startup_message', type=str, default="true", help='Bool if bot should do startup message.')
+    parser.add_argument('--do_startup_message', type=str, default="false", help='Bool if bot should do startup message.')
 
     args = parser.parse_args()
     args.do_startup_message = args.do_startup_message.lower() == "true"
