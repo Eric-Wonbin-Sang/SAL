@@ -92,7 +92,7 @@ class Sal(GroupMe.Bot):
         return command_list_list
 
     def handle_response(self, message):
-        if message.name != self.name and self.is_bot_called(message) and message is not None:
+        if message is not None and message.name != self.name and self.is_bot_called(message):
             command_list_list = self.get_command_list_list(message.text)
             if command_list_list:
                 for (command, *arg_list) in command_list_list:
