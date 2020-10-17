@@ -1,5 +1,0 @@
-{
-  "name": "SAL - Stevens Automation Loader",
-  "call_code": "sal",
-  "credentials_json": "{secrets_dir}/prod_credentials.json"
-}

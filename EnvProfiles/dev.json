@@ -1,5 +1,0 @@
-{
-  "name": "SAL BETA BOT",
-  "call_code": "sal",
-  "credentials_json": "{secrets_dir}/dev_credentials.json"
-}

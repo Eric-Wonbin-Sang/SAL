@@ -27,7 +27,7 @@ class Sal(GroupMe.Bot):
 
         self.env_profile = EnvProfile.EnvProfile(env_key=env_key)
         print("SAL: getting LTSpreadsheet information... ", end="")
-        self.lt_spreadsheet = LTSpreadsheet.LTSpreadsheet(self.env_profile.common_dict["google_sheets_creds"])
+        self.lt_spreadsheet = LTSpreadsheet.LTSpreadsheet(self.env_profile.google_sheets_creds)
         print("done!")
         print("SAL: getting Stevens course information... ", end="")
         self.stevens = Stevens(room_schedule_url=self.get_room_schedule_url())
@@ -38,7 +38,7 @@ class Sal(GroupMe.Bot):
             call_code=self.env_profile.profile_dict["call_code"],
             bot_id=self.env_profile.profile_dict["credentials_json"]["bot_id"],
             groupchat_id=self.env_profile.profile_dict["credentials_json"]["groupchat_id"],
-            groupme_access_token=open(self.env_profile.common_dict["groupme_access_token"]).read(),
+            groupme_access_token=open(self.env_profile.groupme_access_token).read(),
             startup_message=self.lt_spreadsheet.help_dict["help"],
             do_startup_message=do_startup_message
         )
@@ -171,7 +171,7 @@ class Sal(GroupMe.Bot):
         return "incomplete"
 
     def weather_response(self, city="hoboken"):
-        weather = Weather.Weather(self.env_profile.common_dict["yahoo_weather_api_json"])
+        weather = Weather.Weather(self.env_profile.yahoo_weather_api_json)
         return weather.get_response(city)
 
     def joke_response(self):

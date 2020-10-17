@@ -1,5 +1,0 @@
-{
-  "google_sheets_creds": "{api_keys_dir}/Google API - StevensLTBots.json",
-  "groupme_access_token": "{api_keys_dir}/Groupme Access Token.txt",
-  "yahoo_weather_api_json": "{api_keys_dir}/yahoo_weather_api_creds.json"
-}

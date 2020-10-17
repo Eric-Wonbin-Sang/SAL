@@ -5,32 +5,22 @@ from General import Functions
 
 class EnvProfile:
 
-    api_keys_dir = Functions.get_curr_parent_dir() + "/API Keys"
-    secrets_dir = Functions.get_curr_parent_dir() + "/API Keys/SAL"
-    env_profiles_dir = "EnvProfiles"
-    common_json_path = env_profiles_dir + "/common.json"
+    common_dir = Functions.get_curr_parent_dir() + "/0 - Secrets/SAL/common"
+    env_profiles_dir = Functions.get_curr_parent_dir() + "/0 - Secrets/SAL/EnvProfiles"
 
     def __init__(self, env_key):
 
         self.env_key = env_key
 
-        self.common_dict = self.get_common_dict()
-        self.profile_dict = self.get_profile_dict()
+        self.google_sheets_creds = self.common_dir + "/Google API - StevensLTBots.json"
+        self.groupme_access_token = self.common_dir + "/Groupme Access Token.txt"
+        self.yahoo_weather_api_json = self.common_dir + "/yahoo_weather_api_creds.json"
 
-    def get_json_path(self):
+        self.profile_json_path = self.get_profile_json_path()
+        self.profile_dict = Functions.parse_json(self.profile_json_path)
+
+    def get_profile_json_path(self):
         for filename in os.listdir(EnvProfile.env_profiles_dir):
-            if self.env_key == "".join(filename.split(".json")[:-1]):
+            if self.env_key == filename.split(".json")[0]:
                 return EnvProfile.env_profiles_dir + "/" + filename
-        raise UserWarning("env_key does not exist in EnvProfiles dir")
-
-    def get_common_dict(self):
-        for key, value in (data_dict := Functions.parse_json(EnvProfile.common_json_path)).items():
-            if "{api_keys_dir}" in value:
-                data_dict[key] = value.format(api_keys_dir=self.api_keys_dir)
-        return data_dict
-
-    def get_profile_dict(self):
-        for key, value in (data_dict := Functions.parse_json(self.get_json_path())).items():
-            if "{secrets_dir}" in value:
-                data_dict[key] = Functions.parse_json(value.format(secrets_dir=self.secrets_dir))
-        return data_dict
+        raise UserWarning("env_key {} does not exist in EnvProfiles dir".format(self.env_key))
