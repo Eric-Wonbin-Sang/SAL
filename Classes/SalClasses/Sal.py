@@ -36,8 +36,8 @@ class Sal(GroupMe.Bot):
         super().__init__(
             name=self.env_profile.profile_dict["name"],
             call_code=self.env_profile.profile_dict["call_code"],
-            bot_id=self.env_profile.profile_dict["credentials_json"]["bot_id"],
-            groupchat_id=self.env_profile.profile_dict["credentials_json"]["groupchat_id"],
+            bot_id=self.env_profile.profile_dict["bot_id"],
+            groupchat_id=self.env_profile.profile_dict["groupchat_id"],
             groupme_access_token=open(self.env_profile.groupme_access_token).read(),
             startup_message=self.lt_spreadsheet.help_dict["help"],
             do_startup_message=do_startup_message
