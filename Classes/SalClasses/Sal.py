@@ -58,7 +58,7 @@ class Sal(GroupMe.Bot):
             ]
         )
 
-        print("SAL has been initiated.")
+        print("SAL (type: {}) has been initiated.".format(self.env_profile.env_key))
         print("-----------------------------")
 
     def get_sal_command_list(self, tuple_list):
